@@ -1,0 +1,2 @@
+[console_scripts]
+react-smell-analyzer = src.cli:run

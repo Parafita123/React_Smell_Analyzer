@@ -1,0 +1,23 @@
+Metadata-Version: 2.4
+Name: react-smell-analyzer
+Version: 0.1.0
+Summary: CLI tool for detecting selected software supply chain smells in React/npm projects
+Requires-Python: >=3.10
+Description-Content-Type: text/markdown
+License-File: LICENSE
+Dynamic: license-file
+
+React Smell Analyzer
+
+Minimal CLI prototype to analyze React/npm projects and detect selected supply chain smells.
+
+    Current supported smells
+- no-package-lock
+- pinned-dependency
+
+    Usage
+
+Analyze all supported smells:
+
+```bash
+python main.py --project "C:\path\to\react-project" --all
