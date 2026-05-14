@@ -4,6 +4,8 @@ from src.smells.url_dependency import UrlDependencyDetector
 from src.smells.restrictive_constraint import RestrictiveConstraintDetector
 from src.smells.permissive_constraint import PermissiveConstraintDetector
 from src.smells.duplicate_versions import DuplicateVersionsDetector
+from src.smells.unused_dependency import UnusedDependencyDetector
+from src.smells.missing_dependency import MissingDependencyDetector
 
 SMELL_REGISTRY = {
     "no-package-lock": NoPackageLockDetector(),
@@ -12,4 +14,6 @@ SMELL_REGISTRY = {
     "restrictive-constraint": RestrictiveConstraintDetector(),
     "permissive-constraint": PermissiveConstraintDetector(),
     "duplicate-versions": DuplicateVersionsDetector(),
+    "unused-dependency": UnusedDependencyDetector(),
+    "missing-dependency": MissingDependencyDetector(),
 }
