@@ -25,10 +25,15 @@ PACKAGE_JSON_SMELLS = {
     "url-dependency",
     "restrictive-constraint",
     "permissive-constraint",
+    "unmaintained-package",
 }
 
 PACKAGE_LOCK_SMELLS = {
     "duplicate-versions",
+}
+
+NODE_MODULES_SMELLS = {
+    "installation-scripts",
 }
 
 

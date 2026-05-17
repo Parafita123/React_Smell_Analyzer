@@ -1,17 +1,35 @@
 # React Smell Analyzer
 
-React Smell Analyzer is a command-line tool for detecting selected software supply chain risk indicators in React/npm projects.  
-The current prototype combines native local analysis of project files with external tool integration in order to detect dependency-related smells and generate structured reports.
+React Smell Analyzer is a command-line tool for detecting selected software supply chain smells in React/npm projects.
+
+The current prototype combines:
+
+- native local analysis of project files;
+- dependency usage analysis through external tooling;
+- selected repository-level checks through Dirty-Waters running via WSL.
+
+The tool generates structured reports with findings and errors for each analysis run.
 
 ## Current Scope
 
-The tool currently targets projects based on the npm ecosystem and analyzes information derived from:
+The current prototype targets projects in the npm ecosystem and analyzes information derived from:
 
 - `package.json`
 - `package-lock.json`
+- locally installed dependencies in `node_modules` (for selected smells)
 - source code usage analysis through external tooling
+- repository-level metadata through Dirty-Waters
 
-The current prototype is focused on lightweight, developer-oriented analysis and reporting. It does not execute dependency code and does not attempt to confirm malicious intent or exploitability.
+The prototype is focused on lightweight, developer-oriented analysis and reporting.
+
+It does **not**:
+
+- execute dependency code during analysis;
+- confirm malicious intent;
+- prove exploitability;
+- fully replace specialized ecosystem tools.
+
+Instead, it highlights dependency-related smells and risk indicators that may deserve manual inspection.
 
 ## Currently Supported Smells
 
@@ -25,6 +43,8 @@ These smells are detected directly by the tool through local parsing and rule-ba
 - `restrictive-constraint`
 - `permissive-constraint`
 - `duplicate-versions`
+- `installation-scripts`
+- `unmaintained-package`
 
 ### Knip-based smells
 
@@ -32,6 +52,63 @@ These smells are detected through integration with [Knip](https://knip.dev/):
 
 - `unused-dependency`
 - `missing-dependency`
+
+### Dirty-Waters-based smells
+
+These smells are detected through integration with [Dirty-Waters](https://github.com/chains-project/dirty-waters/) executed through **WSL/Ubuntu**:
+
+- `deprecated-dependency`
+- `no-source-code-link`
+- `no-source-code-sha`
+- `depends-on-fork`
+- `no-build-attestation`
+- `no-invalid-code-signature`
+- `aliased-packages`
+
+> **Note:** Dirty-Waters-based smells are external, slower, GitHub-dependent, and WSL/Ubuntu-oriented in the tested environment. They must be executed explicitly and are not part of the default `--all` run.
+
+## Analysis Modes
+
+The tool currently supports three main execution modes:
+
+### 1. Default full analysis
+
+Runs all default local and Knip-based smells:
+
+```bash
+react-smell-analyzer --project "C:\path\to\react-project" --all
+
+### 2. Dirty-Waters full analysis
+
+Runs all Dirty-Waters based smells:
+
+```bash
+react-smell-analyzer --project "C:\path\to\react-project" --repo owner/repo --dirty-waters-backend wsl --wsl-distro Ubuntu --dirty-waters-root /home/<your-user>/dirty-waters --dirty-waters-all
+
+### 3. Specific smell analysis
+
+Runs one or more explicitly selected smells:
+
+```bash
+react-smell-analyzer --project "C:\path\to\react-project" --smell duplicate-versions
+
+Example with a Dirty-Waters smell:
+
+```bash
+react-smell-analyzer --project "C:\path\to\react-project" --repo owner/repo --dirty-waters-backend wsl --wsl-distro Ubuntu --dirty-waters-root /home/<your-user>/dirty-waters --smell deprecated-dependency
+
+
+### Important Notes About Selected Smells
+
+installation-scripts
+
+This smell requires node_modules to be installed locally, because it inspects dependency package.json files inside the installed dependency tree.
+
+unmaintained-package
+
+This smell is heuristic-based. In the current prototype, it uses npm registry metadata and flags packages whose last registry modification is older than a defined threshold.
+
+A flagged package is not necessarily abandoned, but it may deserve manual inspection.
 
 ## Requirements
 

@@ -13,6 +13,8 @@ from src.smells.depends_on_fork import DependsOnForkDetector
 from src.smells.no_build_attestation import NoBuildAttestationDetector
 from src.smells.no_invalid_code_signature import NoInvalidCodeSignatureDetector
 from src.smells.aliased_packages import AliasedPackagesDetector
+from src.smells.installation_scripts import InstallationScriptsDetector
+from src.smells.unmaintained_package import UnmaintainedPackageDetector
 
 SMELL_REGISTRY = {
     "no-package-lock": NoPackageLockDetector(),
@@ -30,4 +32,6 @@ SMELL_REGISTRY = {
     "no-build-attestation": NoBuildAttestationDetector(),
     "no-invalid-code-signature": NoInvalidCodeSignatureDetector(),
     "aliased-packages": AliasedPackagesDetector(),
+    "installation-scripts": InstallationScriptsDetector(),
+    "unmaintained-package": UnmaintainedPackageDetector(),
 }
